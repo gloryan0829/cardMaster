@@ -329,7 +329,7 @@ contract PausableToken is StandardToken, Pausable {
     }
 }
 
-contract PETToken is StandardBurnableToken, CappedToken, PausableToken {
+contract Token is StandardBurnableToken, CappedToken, PausableToken {
 
     string public constant name = "DaouToken"; // solium-disable-line uppercase
     string public constant symbol = "DTK"; // solium-disable-line uppercase
