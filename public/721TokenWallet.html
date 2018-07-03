@@ -105,15 +105,13 @@
         const Token721Address = "0x75c35c980c0d37ef46df04d31a140b65503c0eed";
 
         window.addEventListener('load', function() {
-            /*
                         if (typeof window.web3 !== "undefined") {
                             web3js = new Web3(window.web3.currentProvider);
                             console.log("Connect to Mist/MetaMask");
                         } else {
-            */
-            web3js = new Web3(new Web3.providers.HttpProvider("http://localhost:9545"));
-            console.log("Connect to Localhost");
-//  			}
+//            web3js = new Web3(new Web3.providers.HttpProvider("http://localhost:9545"));
+//            console.log("Connect to Localhost");
+  			}
 
             web3js.eth.getBlockNumber(function(error, result) {
                 if (error != null) {
