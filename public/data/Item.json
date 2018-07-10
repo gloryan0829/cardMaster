@@ -1,0 +1,33 @@
+{
+  "items" : [{
+    "tokenSeq" : 0,
+    "name" : "전설의 검",
+    "itemType" : "Weapon",
+    "itemGrade" : "Normal",
+    "ability" : {
+      "attack" : 100,
+      "defence" : 50
+    },
+    "img" : "/static/imgs/weapon/weapon1.png"
+  },{
+      "tokenSeq" : 1,
+      "name" : "나이키부츠",
+      "itemType" : "Boots",
+      "itemGrade" : "Normal",
+      "ability" : {
+      "attack" : 30,
+      "defence" : 20
+    },
+    "img" : "/static/imgs/boots/boots1.png"
+  },{
+    "tokenSeq" : 2,
+    "name" : "나이키부츠",
+    "itemType" : "Boots",
+    "itemGrade" : "Normal",
+    "ability" : {
+      "attack" : 30,
+      "defence" : 20
+    },
+    "img" : "/static/imgs/boots/boots1.png"
+  }]
+}

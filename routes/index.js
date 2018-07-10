@@ -1,4 +1,5 @@
 var fs = require('fs');
+var _ = require('lodash');
 var APIKEY = "JKB8NTSI84PG6GCM41UWTK47EI8GHDA7VC";
 
 module.exports = function (app)
@@ -54,9 +55,17 @@ module.exports = function (app)
         })
     });
 
-    //Login API
-    app.get('/api/login', function(req, res){
-        res.end();
+    app.get('/api/items', function(req, res){
+        var rawData = fs.readFileSync('./public/data/item.json');
+        var items = JSON.parse(rawData);
+        res.json(items);
     });
 
+    app.get('/api/items/:id', function(req, res){
+        var rawData = fs.readFileSync('./public/data/item.json');
+        var items = JSON.parse(rawData);
+        console.log({tokenSeq:req.params.id});
+        var data = _.find(items.items, {tokenSeq: Number(req.params.id) });
+        res.json(data);
+    });
 };
