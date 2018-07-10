@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원로그인 페이지</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bignumber.js/bignumber.min.js"></script>
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script src="./static/libs/commonUtil.js"></script>
+
+    <script>
+        const TokenAddr = "";
+        const TokenABI = [{"constant":true,"inputs":[],"name":"mintingFinished","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"INITIAL_SUPPLY","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"cap","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"unpause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_amount","type":"uint256"}],"name":"mint","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"paused","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_subtractedValue","type":"uint256"}],"name":"decreaseApproval","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_value","type":"uint256"}],"name":"burnFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"finishMinting","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"pause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"CAPPED_SUPPLY","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_addedValue","type":"uint256"}],"name":"increaseApproval","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[],"name":"Pause","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpause","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[],"name":"MintFinished","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"}],"name":"OwnershipRenounced","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"burner","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"}];
+        var account;
+
+        $(document).ready(function(){
+
+            web3js = new Web3(window.web3.currentProvider);
+
+            web3js.eth.getAccounts(function(error, result) {
+                if (result.length) {
+                    console.log(result);
+                    account = result[0];
+                    $("#account").text(result[0]);
+                } else {
+                }
+            });
+
+            Kakao.init('c0f483364ab1436546702d51ada90e27');
+            Kakao.Auth.getStatus(loginStatusCallback);
+
+
+        });
+
+        function loginStatusCallback(result) {
+            console.log(result);
+            if(result.status == "connected") {
+                $("#nick_name").text(result.user.properties.nickname);
+                $("#profileImg").attr("src",result.user.properties.thumbnail_image);
+                $("#kakao-login-btn").css('display', 'none');
+                balanceOf("ether");
+            }
+            else {
+                $("#kakao-login-btn").css('display', 'block');
+                Kakao.Auth.createLoginButton({
+                    container: '#kakao-login-btn',
+                    success: function(authObj) {
+                        console.log(JSON.stringify(authObj));
+                    },
+                    fail: function(err) {
+                        alert(JSON.stringify(err));
+                    }
+                });
+            }
+        }
+
+        function balanceOf(gubun) {
+            if(gubun == "ether"){
+                 web3js.eth.getBalance(account, function(error, result) {
+                     if (errorChk("getBalance 호출 실패", error)) return;
+
+                     var myEther = BigNumber(result);
+                     if (myEther.isLessThan(1000000000000000))
+                         var etherMessage = " (경고 : 이더 부족으로 실행하지 못할 수도 있습니다.)"
+                     else
+                         etherMessage = "";
+                     $("#balanceOf").text(myEther.toFixed() + " wei" + etherMessage);
+                 });
+            }else{
+
+            }
+        }
+    </script>
+</head>
+<body>
+    <img>
+        <img id="profileImg" /><br/>
+        이름 : <span id="nick_name"></span><br/>
+        어카운트 정보 : <span id="account"></span><br/>
+        보유 Ether : <span id="balanceOf"></span><br/>
+        보유 게임토큰 : <span id="balanceOfToken"></span><br/>
+        <a id="kakao-login-btn"></a>
+        <hr/>
+        <table border="1" cellpadding="10" cellspacing="10" style="align-content: center" width=500>
+            <tr>
+                <td align="center">반지1</td>
+                <td align="center">투구</td>
+                <td align="center">반지2</td>
+            </tr>
+            <tr>
+                <td align="center">무기1</td>
+                <td align="center"><img src="./static/imgs/character.png" /></td>
+                <td align="center">무기2</td>
+            </tr>
+            <tr>
+                <td align="center">망토</td>
+                <td align="center">신발</td>
+                <td align="center">부적</td>
+            </tr>
+        </table>
+        <hr/>
+        보유아이템목록 <a href="/marketPlace">무기 사러 가기 ></a><br/>
+    </div>
+</body>
+</html>
