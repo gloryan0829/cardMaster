@@ -11,129 +11,813 @@
     <script src="./static/libs/commonUtil.js"></script>
 
     <script>
+        const ItemTokenAddr = "0x0800d08524bd7b9f3bf8d17c85dc146515a373ae";
         const ITemFactoryAddr = "0x67c8feb27a103909f45f453b75635945757258c6";
-        const ITemFactoryABI = [{"constant":true,"inputs":[{"name":"_interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"}],"name":"approve","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"tokenId","type":"uint256"},{"name":"uri","type":"string"}],"name":"setTokenURI","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"InterfaceId_ERC165","outputs":[{"name":"","type":"bytes4"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"itemPriceInfo","outputs":[{"name":"status","type":"uint8"},{"name":"itemSellingPrice","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"exists","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tokenId","type":"uint256"},{"name":"_price","type":"uint256"}],"name":"setItemSellingPrice","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_uri","type":"string"}],"name":"setTokenInfoURIBase","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"},{"name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"createItem","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"tokenId","type":"uint256"}],"name":"itemSellingAvailable","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"v","type":"uint256"}],"name":"uintToString","outputs":[{"name":"str","type":"string"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_tokenName","type":"string"},{"name":"_tokenSymbol","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"}],"name":"OwnershipRenounced","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":true,"name":"_tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_approved","type":"address"},{"indexed":true,"name":"_tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_operator","type":"address"},{"indexed":false,"name":"_approved","type":"bool"}],"name":"ApprovalForAll","type":"event"}];
-        const TokenABI = [{"constant":true,"inputs":[],"name":"mintingFinished","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"INITIAL_SUPPLY","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"cap","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"unpause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_amount","type":"uint256"}],"name":"mint","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"paused","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_subtractedValue","type":"uint256"}],"name":"decreaseApproval","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_value","type":"uint256"}],"name":"burnFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"finishMinting","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"pause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"CAPPED_SUPPLY","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_addedValue","type":"uint256"}],"name":"increaseApproval","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[],"name":"Pause","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpause","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[],"name":"MintFinished","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"}],"name":"OwnershipRenounced","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"burner","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"}];
-        var account, ItemFactory;
+        const ITemFactoryABI = [{
+            "constant": true,
+            "inputs": [{"name": "_interfaceId", "type": "bytes4"}],
+            "name": "supportsInterface",
+            "outputs": [{"name": "", "type": "bool"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "name",
+            "outputs": [{"name": "", "type": "string"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{"name": "_tokenId", "type": "uint256"}],
+            "name": "getApproved",
+            "outputs": [{"name": "", "type": "address"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_to", "type": "address"}, {"name": "_tokenId", "type": "uint256"}],
+            "name": "approve",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "tokenId", "type": "uint256"}, {"name": "uri", "type": "string"}],
+            "name": "setTokenURI",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "totalSupply",
+            "outputs": [{"name": "", "type": "uint256"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "InterfaceId_ERC165",
+            "outputs": [{"name": "", "type": "bytes4"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_from", "type": "address"}, {"name": "_to", "type": "address"}, {
+                "name": "_tokenId",
+                "type": "uint256"
+            }],
+            "name": "transferFrom",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{"name": "", "type": "uint256"}],
+            "name": "itemPriceInfo",
+            "outputs": [{"name": "status", "type": "uint8"}, {"name": "itemSellingPrice", "type": "uint256"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{"name": "_owner", "type": "address"}, {"name": "_index", "type": "uint256"}],
+            "name": "tokenOfOwnerByIndex",
+            "outputs": [{"name": "", "type": "uint256"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_from", "type": "address"}, {"name": "_to", "type": "address"}, {
+                "name": "_tokenId",
+                "type": "uint256"
+            }],
+            "name": "safeTransferFrom",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_tokenId", "type": "uint256"}],
+            "name": "burn",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{"name": "_tokenId", "type": "uint256"}],
+            "name": "exists",
+            "outputs": [{"name": "", "type": "bool"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{"name": "_index", "type": "uint256"}],
+            "name": "tokenByIndex",
+            "outputs": [{"name": "", "type": "uint256"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{"name": "_tokenId", "type": "uint256"}],
+            "name": "ownerOf",
+            "outputs": [{"name": "", "type": "address"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{"name": "_owner", "type": "address"}],
+            "name": "balanceOf",
+            "outputs": [{"name": "", "type": "uint256"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [],
+            "name": "renounceOwnership",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_tokenId", "type": "uint256"}, {"name": "_price", "type": "uint256"}],
+            "name": "setItemSellingPrice",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "owner",
+            "outputs": [{"name": "", "type": "address"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "symbol",
+            "outputs": [{"name": "", "type": "string"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_to", "type": "address"}, {"name": "_approved", "type": "bool"}],
+            "name": "setApprovalForAll",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_uri", "type": "string"}],
+            "name": "setTokenInfoURIBase",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_from", "type": "address"}, {"name": "_to", "type": "address"}, {
+                "name": "_tokenId",
+                "type": "uint256"
+            }, {"name": "_data", "type": "bytes"}],
+            "name": "safeTransferFrom",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{"name": "_tokenId", "type": "uint256"}],
+            "name": "tokenURI",
+            "outputs": [{"name": "", "type": "string"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [],
+            "name": "createItem",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{"name": "tokenId", "type": "uint256"}],
+            "name": "itemSellingAvailable",
+            "outputs": [{"name": "", "type": "bool"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{"name": "v", "type": "uint256"}],
+            "name": "uintToString",
+            "outputs": [{"name": "str", "type": "string"}],
+            "payable": false,
+            "stateMutability": "pure",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{"name": "_owner", "type": "address"}, {"name": "_operator", "type": "address"}],
+            "name": "isApprovedForAll",
+            "outputs": [{"name": "", "type": "bool"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "newOwner", "type": "address"}],
+            "name": "transferOwnership",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "inputs": [{"name": "_tokenName", "type": "string"}, {"name": "_tokenSymbol", "type": "string"}],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        }, {
+            "anonymous": false,
+            "inputs": [{"indexed": true, "name": "previousOwner", "type": "address"}],
+            "name": "OwnershipRenounced",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{"indexed": true, "name": "previousOwner", "type": "address"}, {
+                "indexed": true,
+                "name": "newOwner",
+                "type": "address"
+            }],
+            "name": "OwnershipTransferred",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{"indexed": true, "name": "_from", "type": "address"}, {
+                "indexed": true,
+                "name": "_to",
+                "type": "address"
+            }, {"indexed": true, "name": "_tokenId", "type": "uint256"}],
+            "name": "Transfer",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{"indexed": true, "name": "_owner", "type": "address"}, {
+                "indexed": true,
+                "name": "_approved",
+                "type": "address"
+            }, {"indexed": true, "name": "_tokenId", "type": "uint256"}],
+            "name": "Approval",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{"indexed": true, "name": "_owner", "type": "address"}, {
+                "indexed": true,
+                "name": "_operator",
+                "type": "address"
+            }, {"indexed": false, "name": "_approved", "type": "bool"}],
+            "name": "ApprovalForAll",
+            "type": "event"
+        }];
+        const TokenABI = [{
+            "constant": true,
+            "inputs": [],
+            "name": "mintingFinished",
+            "outputs": [{"name": "", "type": "bool"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "name",
+            "outputs": [{"name": "", "type": "string"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_spender", "type": "address"}, {"name": "_value", "type": "uint256"}],
+            "name": "approve",
+            "outputs": [{"name": "", "type": "bool"}],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "totalSupply",
+            "outputs": [{"name": "", "type": "uint256"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_from", "type": "address"}, {"name": "_to", "type": "address"}, {
+                "name": "_value",
+                "type": "uint256"
+            }],
+            "name": "transferFrom",
+            "outputs": [{"name": "", "type": "bool"}],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "INITIAL_SUPPLY",
+            "outputs": [{"name": "", "type": "uint256"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "decimals",
+            "outputs": [{"name": "", "type": "uint8"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "cap",
+            "outputs": [{"name": "", "type": "uint256"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [],
+            "name": "unpause",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_to", "type": "address"}, {"name": "_amount", "type": "uint256"}],
+            "name": "mint",
+            "outputs": [{"name": "", "type": "bool"}],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_value", "type": "uint256"}],
+            "name": "burn",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "paused",
+            "outputs": [{"name": "", "type": "bool"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_spender", "type": "address"}, {"name": "_subtractedValue", "type": "uint256"}],
+            "name": "decreaseApproval",
+            "outputs": [{"name": "success", "type": "bool"}],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{"name": "_owner", "type": "address"}],
+            "name": "balanceOf",
+            "outputs": [{"name": "balance", "type": "uint256"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [],
+            "name": "renounceOwnership",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_from", "type": "address"}, {"name": "_value", "type": "uint256"}],
+            "name": "burnFrom",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [],
+            "name": "finishMinting",
+            "outputs": [{"name": "", "type": "bool"}],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [],
+            "name": "pause",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "owner",
+            "outputs": [{"name": "", "type": "address"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "symbol",
+            "outputs": [{"name": "", "type": "string"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_to", "type": "address"}, {"name": "_value", "type": "uint256"}],
+            "name": "transfer",
+            "outputs": [{"name": "", "type": "bool"}],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "CAPPED_SUPPLY",
+            "outputs": [{"name": "", "type": "uint256"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "_spender", "type": "address"}, {"name": "_addedValue", "type": "uint256"}],
+            "name": "increaseApproval",
+            "outputs": [{"name": "success", "type": "bool"}],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{"name": "_owner", "type": "address"}, {"name": "_spender", "type": "address"}],
+            "name": "allowance",
+            "outputs": [{"name": "", "type": "uint256"}],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{"name": "newOwner", "type": "address"}],
+            "name": "transferOwnership",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "inputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        }, {"anonymous": false, "inputs": [], "name": "Pause", "type": "event"}, {
+            "anonymous": false,
+            "inputs": [],
+            "name": "Unpause",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{"indexed": true, "name": "to", "type": "address"}, {
+                "indexed": false,
+                "name": "amount",
+                "type": "uint256"
+            }],
+            "name": "Mint",
+            "type": "event"
+        }, {"anonymous": false, "inputs": [], "name": "MintFinished", "type": "event"}, {
+            "anonymous": false,
+            "inputs": [{"indexed": true, "name": "previousOwner", "type": "address"}],
+            "name": "OwnershipRenounced",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{"indexed": true, "name": "previousOwner", "type": "address"}, {
+                "indexed": true,
+                "name": "newOwner",
+                "type": "address"
+            }],
+            "name": "OwnershipTransferred",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{"indexed": true, "name": "burner", "type": "address"}, {
+                "indexed": false,
+                "name": "value",
+                "type": "uint256"
+            }],
+            "name": "Burn",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{"indexed": true, "name": "owner", "type": "address"}, {
+                "indexed": true,
+                "name": "spender",
+                "type": "address"
+            }, {"indexed": false, "name": "value", "type": "uint256"}],
+            "name": "Approval",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{"indexed": true, "name": "from", "type": "address"}, {
+                "indexed": true,
+                "name": "to",
+                "type": "address"
+            }, {"indexed": false, "name": "value", "type": "uint256"}],
+            "name": "Transfer",
+            "type": "event"
+        }];
+        var account, ItemFactory, GameToken, Attack = 0, Defence = 0;
 
-        $(document).ready(function(){
+        $(document).ready(function () {
 
             web3js = new Web3(window.web3.currentProvider);
 
             ItemFactory = web3js.eth.contract(ITemFactoryABI).at(ITemFactoryAddr);
+            GameToken = web3js.eth.contract(TokenABI).at(ItemTokenAddr);
 
-            web3js.eth.getAccounts(function(error, result) {
+            web3js.eth.getAccounts(function (error, result) {
                 if (result.length) {
                     console.log(result);
                     account = result[0];
                     $("#account").text(result[0]);
+
+                    balanceOf();
+                    ownerOfItems();
+                    itemPositionSetup();
+
                 } else {
                 }
             });
 
             Kakao.init('c0f483364ab1436546702d51ada90e27');
             Kakao.Auth.getStatus(loginStatusCallback);
-
         });
 
         function loginStatusCallback(result) {
             console.log(result);
-            if(result.status == "connected") {
+            if (result.status == "connected") {
                 $("#nick_name").text(result.user.properties.nickname);
-                $("#profileImg").attr("src",result.user.properties.thumbnail_image);
+                $("#profileImg").attr("src", result.user.properties.thumbnail_image);
                 $("#kakao-login-btn").css('display', 'none');
-                balanceOf("ether");
-                ownerOfItems();
             }
             else {
                 $("#kakao-login-btn").css('display', 'block');
                 Kakao.Auth.createLoginButton({
                     container: '#kakao-login-btn',
-                    success: function(authObj) {
+                    success: function (authObj) {
                         console.log(JSON.stringify(authObj));
                     },
-                    fail: function(err) {
+                    fail: function (err) {
                         alert(JSON.stringify(err));
                     }
                 });
             }
         }
 
-        function balanceOf(gubun) {
-            if(gubun == "ether"){
-                 web3js.eth.getBalance(account, function(error, result) {
-                     if (errorChk("getBalance 호출 실패", error)) return;
+        function balanceOf() {
+            web3js.eth.getBalance(account, function (error, result) {
+                if (errorChk("getBalance 호출 실패", error)) return;
 
-                     var myEther = BigNumber(result);
-                     if (myEther.isLessThan(1000000000000000))
-                         var etherMessage = " (경고 : 이더 부족으로 실행하지 못할 수도 있습니다.)"
-                     else
-                         etherMessage = "";
+                var myEther = BigNumber(result);
+                if (myEther.isLessThan(1000000000000000))
+                    var etherMessage = " (경고 : 이더 부족으로 실행하지 못할 수도 있습니다.)"
+                else
+                    etherMessage = "";
 
-                     $("#balanceOf").text(myEther.toFixed() + " wei" + etherMessage);
-                 });
-            }else{
+                $("#balanceOf").text(myEther.toFixed() + " wei" + etherMessage);
+            });
+            GameToken.balanceOf(account, function (error, result) {
+                if (errorChk("Token balanceOf 호출 실패", error)) return;
 
-            }
+                var gameToken = BigNumber(result);
+
+                $("#balanceOfToken").text(gameToken.toFixed() + " GameToken");
+            });
+
         }
 
-        function ownerOfItems(){
-            ItemFactory.balanceOf(account, function(error, result) {
+        function ownerOfItems() {
+            ItemFactory.balanceOf(account, function (error, result) {
                 if (errorChk("balanceOf 호출 실패", error)) {
                     myBalance = 0;
                     return;
                 }
 
                 myBalance = result;
-                ItemFactory.symbol(function(error, result) {
+                ItemFactory.symbol(function (error, result) {
                     var mySymbol = result;
 //                    document.getElementById("current_balance").textContent = myBalance.toFixed() + " " + mySymbol;
                 });
 
                 $("#my_tokens").empty();
-                for (i= 0; i < myBalance; i++) {
-                    ItemFactory.tokenByIndex(i, function(error, result) {
+                for (var i = 0; i < myBalance; i++) {
+                    ItemFactory.tokenByIndex(i, function (error, result) {
                         if (errorChk("tokenByIndex 호출 실패", error)) return;
-                        $.when($.ajax("./api/items/"+result)).then(function(data, textStatus, jqXHR){
-                           console.log(data);
-                           $("#my_tokens").append("<img src=\'"+data.img+"\'>" + result + "<br/>");
+                        $.when($.ajax("./api/items/" + result)).then(function (data, textStatus, jqXHR) {
+                            console.log(data);
+
+                            var div = document.createElement('div');
+                            div.data = data;
+                            div.addEventListener('click', function () {
+                                if (window.confirm('해당 무기를 장착하시겠습니까?')) {
+                                    console.log(div.data);
+                                    equip(div.data);
+                                }
+                            }, false);
+                            var img = document.createElement('img');
+                            img.src = data.img;
+                            var text = document.createTextNode(data.name + " / " + data.itemType + " / " + data.itemGrade + " / att : " + data["ability"].attack + " , def :  " + data["ability"].defence);
+                            div.appendChild(img);
+                            div.appendChild(text);
+
+                            $("#my_tokens").append(div);
+                            if ((i + 1) % 5 == 0) $("#my_tokens").append("<br/>");
                         });
 
                     });
                 }
             });
         }
+
+        function dataInit() {
+            window.localStorage.equip = JSON.stringify({
+                "Ring": ["반지", "#"],
+                "Helmet": ["투구", "#"],
+                "Hair": ["가발", "#"],
+                "Weapon": ["무기", "#"],
+                "Shield": ["방패", "#"],
+                "Cloak": ["망토", "#"],
+                "Boots": ["신발", "#"],
+                "Charm": ["부적", "#"]
+            });
+        }
+
+        function equip(equipment) {
+            // DB 가 아닌 우선 SessionStorage사용.
+            // 초기화
+            if (window.localStorage.equip == null) {
+                dataInit();
+            }
+
+            var div = document.createElement('div');
+            div.data = equipment;
+            div.addEventListener('click', function () {
+                if (window.confirm('해당 무기를 해제하시겠습니까?')) {
+//                        console.log(div.data);
+//                        equip(div.data);
+                }
+            }, false);
+            var img = document.createElement('img');
+            img.src = equipment.img;
+            var text = document.createTextNode(equipment.name + " / " + equipment.itemType + " / " + equipment.itemGrade + " / att : " + equipment["ability"].attack + " , def :  " + equipment["ability"].defence);
+            div.appendChild(img);
+            div.appendChild(text);
+
+            if($("#" + equipment.itemType + ":has(img)").length == 1){
+                var prevData = $("#" + equipment.itemType).children()[0].data;
+                Attack-=prevData["ability"].attack;
+                Defence-=prevData["ability"].defence;
+            }
+
+            Attack+=equipment["ability"].attack;
+            Defence+=equipment["ability"].defence;
+            totalAbility();
+
+            console.log($("#" + equipment.itemType + ":has(img)"));
+
+
+            $("#" + equipment.itemType).empty();
+            $("#" + equipment.itemType).append(div);
+
+            changeStorage(equipment);
+
+        }
+
+        function changeStorage(equipment) {
+            var equip = JSON.parse(window.localStorage.equip);
+
+            equip[equipment.itemType] = [equipment.name, equipment.img, equipment.tokenSeq, equipment.itemGrade, equipment["ability"].attack, equipment["ability"].defence];
+
+            window.localStorage.equip = JSON.stringify(equip);
+            console.log(window.localStorage.equip);
+        }
+
+        function itemPositionSetup() {
+            var equip = JSON.parse(window.localStorage.equip);
+            for (var key in equip) {
+                if (equip.hasOwnProperty(key)) {
+                    var info = equip[key];
+
+                    if (info[1] != "#") {
+                        var div = document.createElement('div');
+                        div.data = {
+                            "tokenSeq": info[2],
+                            "itemType": key,
+                            "ability" : {
+                                "attack" : info[4],
+                                "defence" : info[5]
+                            }
+                        };
+                        div.addEventListener('click', function () {
+                            if (window.confirm('해당 무기를 해제하시겠습니까?')) {
+                                //unequip(div.data);
+                            }
+                        }, false);
+                        var img = document.createElement('img');
+                        img.src = info[1];
+                        var text = document.createTextNode(info[0] + " / " + key + " / " + info[3] + " / att : " + info[4] + " , def :  " + info[5]);
+                        div.appendChild(img);
+                        div.appendChild(text);
+
+                        Attack+=info[4];
+                        Defence+=info[5];
+                        totalAbility();
+
+                        $("#" + key).empty();
+                        $("#" + key).append(div);
+
+                    }
+                }
+            }
+        }
+
+        function totalAbility(){
+            $("#attack").text(Attack);
+            $("#defence").text(Defence);
+        }
     </script>
 </head>
 <body>
-    <img>
-        <img id="profileImg" /><br/>
-        이름 : <span id="nick_name"></span><br/>
-        어카운트 정보 : <span id="account"></span><br/>
-        보유 Ether : <span id="balanceOf"></span><br/>
-        보유 게임토큰 : <span id="balanceOfToken"></span><br/>
-        <a id="kakao-login-btn"></a>
-        <hr/>
-        <table border="1" cellpadding="10" cellspacing="10" style="align-content: center" width=500>
-            <tr>
-                <td align="center">반지1</td>
-                <td align="center">투구</td>
-                <td align="center">반지2</td>
-            </tr>
-            <tr>
-                <td align="center">무기1</td>
-                <td align="center"><img src="./static/imgs/character.png" /></td>
-                <td align="center">무기2</td>
-            </tr>
-            <tr>
-                <td align="center">망토</td>
-                <td align="center">신발</td>
-                <td align="center">부적</td>
-            </tr>
-        </table>
-        <hr/>
-        보유아이템목록 <a href="/marketPlace">무기 사러 가기 ></a><br/>
-        <div id="my_tokens"></div>
-    </div>
+<img>
+<img id="profileImg"/><br/>
+이름 : <span id="nick_name"></span><br/>
+어카운트 정보 : <span id="account"></span><br/>
+보유 Ether : <span id="balanceOf"></span><br/>
+보유 게임토큰 : <span id="balanceOfToken"></span><br/>
+<a id="kakao-login-btn"></a>
+<hr/>
+<h3>공격 : <span id="attack"></span> 방어 : <span id="defence"></span></h3>
+<table border="1" cellpadding="10" cellspacing="10" style="align-content: center;width:800px;">
+    <tr>
+        <td id="Ring" align="center">반지</td>
+        <td id="Helmet" align="center">투구</td>
+        <td id="Hair" align="center">가발</td>
+    </tr>
+    <tr>
+        <td id="Weapon" align="center">무기</td>
+        <td id="Character" align="center">
+            <img src="./static/imgs/character.png"/>
+        </td>
+        <td id="Shield" align="center">방패</td>
+    </tr>
+    <tr>
+        <td id="Cloak" align="center">망토</td>
+        <td id="Boots" align="center">신발</td>
+        <td id="Charm" align="center">부적</td>
+    </tr>
+</table>
+<hr/>
+보유아이템목록 <a href="/marketPlace">무기 사러 가기 ></a><br/>
+<div id="my_tokens"></div>
+</div>
 </body>
 </html>

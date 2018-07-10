@@ -3,7 +3,7 @@ pragma solidity ^0.4.23;
 import "./Ownable.sol";
 import "./Token.sol";
 import "./ERC721.sol";
-import "./CardFactory.sol";
+import "./ItemFactory.sol";
 
 contract CardTradingInterface {
     function buyCard(uint _price) public returns (bool);
