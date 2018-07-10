@@ -21,13 +21,23 @@
     "img" : "/static/imgs/boots/boots1.png"
   },{
     "tokenSeq" : 2,
-    "name" : "나이키부츠",
-    "itemType" : "Boots",
+    "name" : "참나무방패",
+    "itemType" : "Shield",
     "itemGrade" : "Normal",
     "ability" : {
-      "attack" : 30,
-      "defence" : 20
+      "attack" : 40,
+      "defence" : 90
     },
-    "img" : "/static/imgs/boots/boots1.png"
+    "img" : "/static/imgs/shield/3.png"
+  },{
+    "tokenSeq" : 3,
+    "name" : "바람의망토",
+    "itemType" : "Cloak",
+    "itemGrade" : "Normal",
+    "ability" : {
+      "attack" : 10,
+      "defence" : 30
+    },
+    "img" : "/static/imgs/cloak/4.png"
   }]
 }

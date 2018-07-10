@@ -565,7 +565,17 @@
             "name": "Transfer",
             "type": "event"
         }];
-        var account, ItemFactory, GameToken, Attack = 0, Defence = 0;
+        var account, ItemFactory, GameToken, Attack = 0, Defence = 0,
+            initObject = {
+                "Ring": ["반지", "#"],
+                "Helmet": ["투구", "#"],
+                "Hair": ["가발", "#"],
+                "Weapon": ["무기", "#"],
+                "Shield": ["방패", "#"],
+                "Cloak": ["망토", "#"],
+                "Boots": ["신발", "#"],
+                "Charm": ["부적", "#"]
+            };
 
         $(document).ready(function () {
 
@@ -679,16 +689,7 @@
         }
 
         function dataInit() {
-            window.localStorage.equip = JSON.stringify({
-                "Ring": ["반지", "#"],
-                "Helmet": ["투구", "#"],
-                "Hair": ["가발", "#"],
-                "Weapon": ["무기", "#"],
-                "Shield": ["방패", "#"],
-                "Cloak": ["망토", "#"],
-                "Boots": ["신발", "#"],
-                "Charm": ["부적", "#"]
-            });
+            window.localStorage.equip = JSON.stringify(initObject);
         }
 
         function equip(equipment) {
@@ -703,7 +704,7 @@
             div.addEventListener('click', function () {
                 if (window.confirm('해당 무기를 해제하시겠습니까?')) {
 //                        console.log(div.data);
-//                        equip(div.data);
+                        unEquip(div.data);
                 }
             }, false);
             var img = document.createElement('img');
@@ -732,6 +733,22 @@
 
         }
 
+        function unEquip(data){
+            $("#" + data.itemType).empty();
+
+            var equip = JSON.parse(window.localStorage.equip);
+
+            Attack-=data["ability"].attack;
+            Defence-=data["ability"].defence;
+            totalAbility();
+
+            equip[data.itemType] = initObject[data.itemType];
+
+            window.localStorage.equip = JSON.stringify(equip);
+
+            $("#" + data.itemType).html(initObject[data.itemType][0]);
+        }
+
         function changeStorage(equipment) {
             var equip = JSON.parse(window.localStorage.equip);
 
@@ -758,8 +775,10 @@
                             }
                         };
                         div.addEventListener('click', function () {
+                            console.log(div.data);
                             if (window.confirm('해당 무기를 해제하시겠습니까?')) {
-                                //unequip(div.data);
+                                unEquip(div.data);
+
                             }
                         }, false);
                         var img = document.createElement('img');
