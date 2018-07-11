@@ -31,6 +31,17 @@ module.exports = function (app)
         })
     });
 
+    app.get('/tradeToken', function(req, res){
+        fs.readFile('./public/tradeToken.html', function (error, data) {
+            if (error) {
+                console.log(error);
+            } else {
+                res.writeHead(200, { 'Content-Type' : 'text/html'});
+                res.end(data);
+            }
+        })
+    });
+
     // Token Wallet Example
     app.get('/TokenWallet', function(req, res){
         fs.readFile('./public/TokenWallet.html', function (error, data) {
@@ -64,8 +75,8 @@ module.exports = function (app)
     app.get('/api/items/:id', function(req, res){
         var rawData = fs.readFileSync('./public/data/item.json');
         var items = JSON.parse(rawData);
-        console.log({tokenSeq:req.params.id});
         var data = _.find(items.items, {tokenSeq: Number(req.params.id) });
+        if(!data) data = {"tokenSeq":-1};
         res.json(data);
     });
 };

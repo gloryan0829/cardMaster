@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>토큰교환</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bignumber.js/bignumber.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script src="./static/libs/commonUtil.js"></script>
+
+    <script>
+        const ItemTokenAddr = "0x0800d08524bd7b9f3bf8d17c85dc146515a373ae";
+        const TokenABI = [{"constant":true,"inputs":[],"name":"mintingFinished","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"INITIAL_SUPPLY","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"cap","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"unpause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_amount","type":"uint256"}],"name":"mint","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"paused","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_subtractedValue","type":"uint256"}],"name":"decreaseApproval","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_value","type":"uint256"}],"name":"burnFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"finishMinting","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"pause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"CAPPED_SUPPLY","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_addedValue","type":"uint256"}],"name":"increaseApproval","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[],"name":"Pause","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpause","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[],"name":"MintFinished","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"}],"name":"OwnershipRenounced","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"burner","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"}];
+
+        $(document).ready(() => {
+             console.log(window.web3);
+             if (typeof window.web3 !== "undefined") {
+             	web3js = new Web3(window.web3.currentProvider);
+             	console.log("Connect to Mist/MetaMask");
+             } else {
+                 window.alert("MetaMask 접속이 안되어있습니다!");
+                 window.location = "./login";
+             }
+
+            GameToken = web3js.eth.contract(TokenABI).at(ItemTokenAddr);
+
+            web3js.eth.getAccounts(function (error, result) {
+                if (result.length) {
+                    console.log(result);
+                    account = result[0];
+                    $("#account").text(result[0]);
+
+                    balanceOf();
+                } else {
+                    window.alert("접속된 계정이 없습니다!");
+                    window.location = "./login";
+                }
+            });
+        });
+
+        function balanceOf() {
+            web3js.eth.getBalance(account, function (error, result) {
+                if (errorChk("getBalance 호출 실패", error)) return;
+
+                var myEther = BigNumber(result);
+                if (myEther.isLessThan(1000000000000000))
+                    var etherMessage = " (경고 : 이더 부족으로 실행하지 못할 수도 있습니다.)"
+                else
+                    etherMessage = "";
+
+                $("#balanceOf").text(myEther.toFixed() + " wei" + etherMessage);
+            });
+            GameToken.balanceOf(account, function (error, result) {
+                if (errorChk("Token balanceOf 호출 실패", error)) return;
+
+                var gameToken = BigNumber(result);
+
+                $("#balanceOfToken").text(gameToken.toFixed() + " GameToken");
+            });
+        }
+
+        function callTransfer() {
+            var i = document.getElementById('sel_transfer_to_names').value;
+            if (i < accounts.length) {
+                if (i == currentAccount) {
+                    writeLog(accountNames[i] + " 에게  전송 : 본인에게 전송하는 것은 의미가 없습니다.");
+                    return;
+                }
+
+                var transferValue = BigNumber(document.getElementById("transfer_value").value);
+                if (transferValue.isLessThan(0)) {
+                    writeLog(accountNames[i] + " 에게  전송 : 0 이상의 값을 입력해주세요.");
+                    return;
+                }
+
+                transferValue = transferValue.multipliedBy(document.getElementById("transfer_unit").value);
+                petToken.transfer.call(accounts[i], transferValue.toFixed(), {from:accounts[currentAccount]}, function(error, result) {
+                    if (errorChk("transfer(call) 호출 실패", error)) return;
+                    if (result) {
+                        petToken.transfer.sendTransaction(
+                            accounts[i],
+                            transferValue.toFixed(),
+                            {
+                                from:accounts[currentAccount],
+                                gasPrice:BigNumber($("#gas_price").val()).multipliedBy(1000000000)
+                            },
+                            function(error, result) {
+                                if (errorChk("transfer(transaction) 호출 실패", error)) return;
+                                writeLog(accountNames[i] + " 에게  전송 : (return data) " + result);
+                            }
+                        );
+                    }
+                });
+            } else {
+                writeLog(accountNames[i] + " 에게  전송 : 계정 number 초과 ERROR! " + accounts.length + " 번째 이하의 계정을 골라주세요.");
+            }
+        }
+    </script>
+</head>
+<body>
+<h2> GameToken Wallet</h2>
+    <div>
+        내 계정 : <text id="account"></text>
+    </div>
+    <div id="balance">
+        내 보유 이더 : <text id="balanceOf"></text>
+    </div>
+    <div id="ether">
+        보유 게임 토큰 : <text id="balanceOfToken"></text>
+    </div>
+<hr/>
+<h2> 토큰 전송 하기 </h2>
+    수신자 : <input type="text" id="recipent" size="100" /><br/>
+    전송 토큰 : <input type="text" id="tokenValue" /> GameToken
+    <button type="button" onClick="callTransfer();">전송하기</button>
+</body>
+</html>

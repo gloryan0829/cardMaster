@@ -39,5 +39,45 @@
       "defence" : 30
     },
     "img" : "/static/imgs/cloak/4.png"
+  },{
+    "tokenSeq" : 4,
+    "name" : "조던링",
+    "itemType" : "Ring",
+    "itemGrade" : "Normal",
+    "ability" : {
+      "attack" : 90,
+      "defence" : 20
+    },
+    "img" : "/static/imgs/ring/5.png"
+  },{
+    "tokenSeq" : 5,
+    "name" : "글레디에이터헬멧",
+    "itemType" : "Helmet",
+    "itemGrade" : "Normal",
+    "ability" : {
+      "attack" : 50,
+      "defence" : 25
+    },
+    "img" : "/static/imgs/helmet/6.png"
+  },{
+    "tokenSeq" : 6,
+    "name" : "이덕화가발",
+    "itemType" : "Hair",
+    "itemGrade" : "Unique",
+    "ability" : {
+      "attack" : 100,
+      "defence" : 100
+    },
+    "img" : "/static/imgs/hair/7.png"
+  },{
+    "tokenSeq" : 7,
+    "name" : "행운의부적",
+    "itemType" : "Charm",
+    "itemGrade" : "Unique",
+    "ability" : {
+      "attack" : 90,
+      "defence" : 90
+    },
+    "img" : "/static/imgs/charm/9.png"
   }]
 }
