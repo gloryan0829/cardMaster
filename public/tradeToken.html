@@ -11,8 +11,12 @@
     <script src="./static/libs/commonUtil.js"></script>
 
     <script>
+        const CrowdSaleAddr = "0x412b7375e99ac3aa59b8d0ccbe88febe57b6591c";
         const ItemTokenAddr = "0x0800d08524bd7b9f3bf8d17c85dc146515a373ae";
         const TokenABI = [{"constant":true,"inputs":[],"name":"mintingFinished","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"INITIAL_SUPPLY","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"cap","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"unpause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_amount","type":"uint256"}],"name":"mint","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"paused","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_subtractedValue","type":"uint256"}],"name":"decreaseApproval","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_value","type":"uint256"}],"name":"burnFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"finishMinting","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"pause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"CAPPED_SUPPLY","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_addedValue","type":"uint256"}],"name":"increaseApproval","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[],"name":"Pause","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpause","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"Mint","type":"event"},{"anonymous":false,"inputs":[],"name":"MintFinished","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"}],"name":"OwnershipRenounced","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"burner","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Burn","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"}];
+        const CrowdSaleABI = [{"constant":true,"inputs":[],"name":"rate","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"weiRaised","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"wallet","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_beneficiary","type":"address"}],"name":"buyTokens","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"token","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_rate","type":"uint256"},{"name":"_wallet","type":"address"},{"name":"_token","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":true,"name":"purchaser","type":"address"},{"indexed":true,"name":"beneficiary","type":"address"},{"indexed":false,"name":"value","type":"uint256"},{"indexed":false,"name":"amount","type":"uint256"}],"name":"TokenPurchase","type":"event"}];
+
+        let account, GameToken, CrowdSale, GasPrice;
 
         $(document).ready(() => {
              console.log(window.web3);
@@ -25,6 +29,7 @@
              }
 
             GameToken = web3js.eth.contract(TokenABI).at(ItemTokenAddr);
+            CrowdSale = web3js.eth.contract(CrowdSaleABI).at(CrowdSaleAddr);
 
             web3js.eth.getAccounts(function (error, result) {
                 if (result.length) {
@@ -38,10 +43,22 @@
                     window.location = "./login";
                 }
             });
+
+            currencyOptionDraw();
+            GasPrice = getGasPrice();
         });
 
+
+        function getGasPrice() {
+            return new Promise((resolve, reject) => {
+                 $.getJSON('https://ethgasstation.info/json/ethgasAPI.json', (data) => {
+                     resolve(data['safeLow']/10);
+                 });
+            });
+        }
+
         function balanceOf() {
-            web3js.eth.getBalance(account, function (error, result) {
+            web3js.eth.getBalance(account, (error, result) => {
                 if (errorChk("getBalance 호출 실패", error)) return;
 
                 var myEther = BigNumber(result);
@@ -52,49 +69,94 @@
 
                 $("#balanceOf").text(myEther.toFixed() + " wei" + etherMessage);
             });
-            GameToken.balanceOf(account, function (error, result) {
+            GameToken.balanceOf(account, (error, result) => {
                 if (errorChk("Token balanceOf 호출 실패", error)) return;
 
-                var gameToken = BigNumber(result);
-
-                $("#balanceOfToken").text(gameToken.toFixed() + " GameToken");
+                $("#balanceOfToken").text(BigNumber(result).toFixed() + " GameToken");
             });
+            GameToken.balanceOf(CrowdSaleAddr, (error, result) => {
+                if (errorChk("CrowdSale Token balanceOf 호출 실패", error)) return;
+
+                $("#availableSaleToken").text(BigNumber(result).toFixed() + " GameToken");
+            });
+
+            CrowdSale.rate((error, result) => {
+                if (errorChk("CrowdSale Token rate 호출 실패", error)) return;
+                console.log(result);
+                $("#rate").val(BigNumber(result).toFixed());
+            });
+
+            GasPrice.then((data) => { $("#gas_price").val(data) });
+        }
+
+        function buyTokens() {
+
+            let tokenAmount = BigNumber(Number($("#buyTokens").val()));
+
+            if (tokenAmount.isLessThanOrEqualTo(0)) return alert("토큰의 양은 0 이상이 되어야합니다");
+
+            web3js.eth.sendTransaction({
+                from: account,
+                to: CrowdSaleAddr,
+                value: tokenAmount,
+                gasPrice : BigNumber($("#gas_price").val()).multipliedBy(500000000)
+            }, (error, result) => {
+                var txURl = "https://ropsten.etherscan.io/tx/" + result;
+                txLog({
+                    targetEl : "result",
+                    msg : tokenAmount + " GameToken 구매를 위해 " + tokenAmount.toFixed() + " Wei 전송 완료 [<a target=\"_blank\" href=\""+txURl+"\">"+result+"</a>]"
+                });
+                balanceOf();
+                $("#buyTokens").val(0);
+            })
         }
 
         function callTransfer() {
-            var i = document.getElementById('sel_transfer_to_names').value;
-            if (i < accounts.length) {
-                if (i == currentAccount) {
-                    writeLog(accountNames[i] + " 에게  전송 : 본인에게 전송하는 것은 의미가 없습니다.");
-                    return;
-                }
+            let recipent = $('#recipent').val();
 
-                var transferValue = BigNumber(document.getElementById("transfer_value").value);
-                if (transferValue.isLessThan(0)) {
-                    writeLog(accountNames[i] + " 에게  전송 : 0 이상의 값을 입력해주세요.");
-                    return;
-                }
+            let transferValue = BigNumber($("#tokenValue").val());
 
-                transferValue = transferValue.multipliedBy(document.getElementById("transfer_unit").value);
-                petToken.transfer.call(accounts[i], transferValue.toFixed(), {from:accounts[currentAccount]}, function(error, result) {
-                    if (errorChk("transfer(call) 호출 실패", error)) return;
-                    if (result) {
-                        petToken.transfer.sendTransaction(
-                            accounts[i],
-                            transferValue.toFixed(),
-                            {
-                                from:accounts[currentAccount],
-                                gasPrice:BigNumber($("#gas_price").val()).multipliedBy(1000000000)
-                            },
-                            function(error, result) {
-                                if (errorChk("transfer(transaction) 호출 실패", error)) return;
-                                writeLog(accountNames[i] + " 에게  전송 : (return data) " + result);
-                            }
-                        );
-                    }
+            if (transferValue.isLessThan(0)) {
+                alert("0보다 큰값을 입력해 주세요!");
+                return;
+            }
+
+            transferValue = transferValue.multipliedBy($("#transfer_unit").val());
+            console.log(recipent);
+            console.log(transferValue);
+
+            GameToken.transfer.sendTransaction(
+                account,
+                transferValue.toFixed(),
+                {
+                    from: recipent, //0xD01Ff256CEF9851488CB6533746f76A6525EfA5C
+                    gasPrice: BigNumber($("#gas_price").val()).multipliedBy(500000000)
+                },
+                (error, result) => {
+                    if(errorChk("transfer(transaction) 실패", error)) return;
+                    console.log(result);
+                    var txURl = "https://ropsten.etherscan.io/tx/" + result;
+                    txLog({
+                        targetEl : "result",
+                        msg : account + " 에게 " + transferValue.toFixed() + " GT 전송 완료 [<a target=\"_blank\" href=\""+txURl+"\">"+result+"</a>]"
+                    })
+                }
+            );
+
+        }
+
+        function calculateToken() {
+            $("#expectedGT").text(BigNumber(Number($("#buyTokens").val()) * Number($("#rate").val())));
+        }
+
+        function currencyOptionDraw() {
+            for( var i = 0; i <= 6; i++ ){
+                $(".currencyUnitSelector").append(function(){
+                    return	$('<option>', {
+                        value : 1 * Math.pow(10,i*3),
+                        text : i == 0? $(this).attr("name") :"10^" + (i*3) + " " + $(".currencyUnitSelector")[0].name
+                    });
                 });
-            } else {
-                writeLog(accountNames[i] + " 에게  전송 : 계정 number 초과 ERROR! " + accounts.length + " 번째 이하의 계정을 골라주세요.");
             }
         }
     </script>
@@ -111,9 +173,18 @@
         보유 게임 토큰 : <text id="balanceOfToken"></text>
     </div>
 <hr/>
-<h2> 토큰 전송 하기 </h2>
-    수신자 : <input type="text" id="recipent" size="100" /><br/>
-    전송 토큰 : <input type="text" id="tokenValue" /> GameToken
+    시장의 현재 Gas Price : <input type="string" id="gas_price" readonly />
+<hr/>
+<h2> 토큰 선물 하기 </h2>
+    수신자 : <input type="string" id="recipent" size="80" /><br/>
+    전송 토큰 : <input type="string" id="tokenValue" /> GameToken
+    <select class="currencyUnitSelector" name="GT" class="currencyUnitSelector" id="transfer_unit"></select>
     <button type="button" onClick="callTransfer();">전송하기</button>
+<hr/>
+<h2> 토큰 구매 하기 (판매 가능 토큰 : <span id="availableSaleToken" style="color:blue;"></span>) </h2>
+    이더 지출 금 : <input type="string" value="0" onkeyup="calculateToken()" id="buyTokens" /> wei * <input type="string" readonly id="rate" /> 비율 (구입 토큰 수량 <span style="color: blue" id="expectedGT"></span> GameToken) 배율 <br/>
+    <button type="button" onClick="buyTokens();">구매하기</button>
+<hr/>
+    로그 : <div id="result" />
 </body>
 </html>

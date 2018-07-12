@@ -103,10 +103,6 @@
                 }
 
                 myBalance = result;
-                ItemFactory.symbol(function (error, result) {
-                    var mySymbol = result;
-//                    document.getElementById("current_balance").textContent = myBalance.toFixed() + " " + mySymbol;
-                });
 
                 $("#my_tokens").empty();
 
@@ -142,6 +138,9 @@
                                 div.appendChild(document.createTextNode("Token Id : " + result + " did not mapped with resources..."))
                                 $("#my_tokens").append(div);
                             }
+
+                            console.log(result);
+
                         });
                     });
                 }
@@ -244,6 +243,7 @@
                         }, false);
                         var img = document.createElement('img');
                         img.src = info[1];
+                        img.style = "width:100px;height:100px;";
                         var text = document.createTextNode(info[0] + " / " + key + " / " + info[3] + " / att : " + info[4] + " , def :  " + info[5]);
                         div.appendChild(img);
                         div.appendChild(text);

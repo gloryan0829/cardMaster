@@ -18,3 +18,11 @@ function errorChk(msg, error) {
         return false;
     }
 }
+
+function txLog(option) {
+
+    var logText = "[" + new Date().toLocaleString() + "]" + option.msg + "\n";
+
+    document.getElementById(option.targetEl).innerHTML = logText;
+}
+
