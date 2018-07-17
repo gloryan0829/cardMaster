@@ -1,3 +1,7 @@
+(function(){
+    Kakao.init('c0f483364ab1436546702d51ada90e27');
+}());
+
 function writeLog(msg, i) {
     if (i === undefined)
         i = currentAccount;
@@ -26,3 +30,10 @@ function txLog(option) {
     document.getElementById(option.targetEl).innerHTML = logText;
 }
 
+function loginStatus() {
+    return new Promise((ok, fail) => {
+        Kakao.Auth.getStatus((result) => {
+            ok(result);
+        })
+    });
+}

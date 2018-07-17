@@ -2,6 +2,17 @@ var fs = require('fs');
 var _ = require('lodash');
 var APIKEY = "JKB8NTSI84PG6GCM41UWTK47EI8GHDA7VC";
 
+function goHtmlPage(url, req, res) {
+    fs.readFile(url, function (error, data) {
+        if (error) {
+            console.log(error);
+        } else {
+            res.writeHead(200, { 'Content-Type' : 'text/html'});
+            res.end(data);
+        }
+    })
+}
+
 module.exports = function (app)
 {
 
@@ -10,60 +21,33 @@ module.exports = function (app)
     });
 
     app.get('/login', function(req, res){
-        fs.readFile('./public/login.html', function (error, data) {
-            if (error) {
-                console.log(error);
-            } else {
-                res.writeHead(200, { 'Content-Type' : 'text/html'});
-                res.end(data);
-            }
-        })
+        goHtmlPage('./public/login.html');
     });
 
     app.get('/mypage', function(req, res){
-        fs.readFile('./public/mypage.html', function (error, data) {
-            if (error) {
-                console.log(error);
-            } else {
-                res.writeHead(200, { 'Content-Type' : 'text/html'});
-                res.end(data);
-            }
-        })
+        goHtmlPage('./public/mypage.html');
+    });
+
+    app.get('/', function(req, res){
+        goHtmlPage('./public/mypage.html',req, res);
+    });
+
+    app.get('/marketPlace', function(req, res){
+        goHtmlPage('./public/marketPlace.html',req, res);
     });
 
     app.get('/tradeToken', function(req, res){
-        fs.readFile('./public/tradeToken.html', function (error, data) {
-            if (error) {
-                console.log(error);
-            } else {
-                res.writeHead(200, { 'Content-Type' : 'text/html'});
-                res.end(data);
-            }
-        })
+        goHtmlPage('./public/tradeToken.html',req, res);
     });
 
     // Token Wallet Example
     app.get('/TokenWallet', function(req, res){
-        fs.readFile('./public/TokenWallet.html', function (error, data) {
-            if (error) {
-                console.log(error);
-            } else {
-                res.writeHead(200, { 'Content-Type' : 'text/html'});
-                res.end(data);
-            }
-        })
+        goHtmlPage('./public/TokenWallet.html',req, res);
     });
 
     // Token 721 Wallet Example
     app.get('/Token721Wallet', function(req, res){
-        fs.readFile('./public/721TokenWallet.html', function (error, data) {
-            if (error) {
-                console.log(error);
-            } else {
-                res.writeHead(200, { 'Content-Type' : 'text/html'});
-                res.end(data);
-            }
-        })
+        goHtmlPage('./public/721TokenWallet.html',req, res);
     });
 
     app.get('/api/items', function(req, res){
