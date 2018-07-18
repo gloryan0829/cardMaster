@@ -2,9 +2,229 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>마켓플레이스</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./static/libs/card.css">
+
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bignumber.js/bignumber.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+    <script src="./static/libs/commonUtil.js"></script>
+
+    <script>
+        const ItemTradingAddr = "0xc983ae11f213f993f6d6d911eb5ae1fe511b53be";
+        const ItemTokenAddr = "0x8b4ece03a7499119fcf908d4e3525aa5e3356897";
+        const ITemFactoryAddr = "0xc83467cdbb1c3fefabf7f8b7fef1695a8ebba11b";
+        const ITemFactoryABI = [{"constant":true,"inputs":[{"name":"_interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"}],"name":"approve","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"tokenId","type":"uint256"},{"name":"uri","type":"string"}],"name":"setTokenURI","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"InterfaceId_ERC165","outputs":[{"name":"","type":"bytes4"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"exists","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"itemExtInfo","outputs":[{"name":"status","type":"uint8"},{"name":"itemSellingPrice","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tokenId","type":"uint256"},{"name":"_price","type":"uint256"}],"name":"setItemSellingPrice","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"tokenId","type":"uint256"}],"name":"getItemSellingAvailable","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"itemTradingAddr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_tokenId","type":"uint256"},{"name":"_status","type":"uint8"}],"name":"setItemSellingStatus","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_uri","type":"string"}],"name":"setTokenInfoURIBase","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"},{"name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_itemTradingAddr","type":"address"}],"name":"setItemTradingAddr","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"createItem","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"v","type":"uint256"}],"name":"uintToString","outputs":[{"name":"str","type":"string"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_tokenName","type":"string"},{"name":"_tokenSymbol","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"}],"name":"OwnershipRenounced","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":true,"name":"_tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_approved","type":"address"},{"indexed":true,"name":"_tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_operator","type":"address"},{"indexed":false,"name":"_approved","type":"bool"}],"name":"ApprovalForAll","type":"event"}];
+        const TokenABI = [{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_subtractedValue","type":"uint256"}],"name":"decreaseApproval","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"itemTradingAddr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_itemTradingAddr","type":"address"}],"name":"setItemTradingAddr","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_addedValue","type":"uint256"}],"name":"increaseApproval","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"}],"name":"OwnershipRenounced","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"}];
+        const ItemTradingABI = [{"constant":true,"inputs":[],"name":"itemFactory","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_tokenId","type":"uint256"},{"name":"_price","type":"uint256"}],"name":"buyCard","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"getOwnerOfToken","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_tokenAddr","type":"address"}],"name":"setCardTokenAddr","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_cardAddr","type":"address"}],"name":"setCardFactoryAddr","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"gameToken","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_itemFactory","type":"address"},{"name":"_token","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_purchaser","type":"address"},{"indexed":false,"name":"_prevOwner","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"},{"indexed":false,"name":"_price","type":"uint256"},{"indexed":false,"name":"_date","type":"uint32"}],"name":"BuyCard","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"}],"name":"OwnershipRenounced","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"}];
+
+        var account, ItemFactory, GameToken, ItemTrading;
+
+        $(document).ready(()=>{
+            loginStatus().then((result) => {
+                if(result.status !== "connected") {
+                    window.location = "./login";
+                    return false;
+                }
+            });
+
+            web3js = new Web3(window.web3.currentProvider);
+
+            ItemFactory = web3js.eth.contract(ITemFactoryABI).at(ITemFactoryAddr);
+            GameToken = web3js.eth.contract(TokenABI).at(ItemTokenAddr);
+            ItemTrading = web3js.eth.contract(ItemTradingABI).at(ItemTradingAddr);
+
+            web3js.eth.getAccounts(function (error, result) {
+                if (result.length) {
+                    console.log(result);
+                    account = result[0];
+                    $("#account").text(result[0]);
+
+                    balanceOf();
+                    cardList();
+                    GasPrice = getGasPrice();
+                    GasPrice.then((data) => { $("#gas_price").val(data) });
+                }
+            });
+        });
+
+        function getGasPrice() {
+            return new Promise((resolve, reject) => {
+                $.getJSON('https://ethgasstation.info/json/ethgasAPI.json', (data) => {
+                    resolve(data['safeLow']/10);
+                });
+            });
+        }
+
+        function balanceOf() {
+            GameToken.balanceOf(account, function (error, result) {
+                if (errorChk("Token balanceOf 호출 실패", error)) return;
+
+                var gameToken = BigNumber(result);
+
+                $("#balanceOfToken").text(gameToken.toFixed());
+            });
+        }
+
+        function cardList() {
+
+            $("#marketItems").empty();
+
+            ItemFactory.totalSupply((error, result) => {
+
+                let myBalance;
+
+                if (errorChk("balanceOf 호출 실패", error)) {
+                    myBalance = 0;
+                    return;
+                }
+
+                myBalance = result;
+
+                for (var i = 0; i < myBalance; i++) {
+                    ItemFactory.tokenByIndex(i, (error, result) => {
+                        if (errorChk("tokenByIndex 호출 실패", error)) return;
+
+                        let getAssetMetaInfo = new Promise((resolve, reject) => {
+                            resolve($.ajax("./api/items/" + result));
+                        });
+
+                        let tokenOwner = new Promise((resolve, reject) => {
+                            ItemFactory.ownerOf(result,(error, owner)=>{
+                                resolve(owner);
+                            });
+                        });
+
+                        ItemFactory.itemExtInfo(result, (error, extInfo) => {
+                            getAssetMetaInfo.then((data)=>{
+                                tokenOwner.then((owner) => {
+                                    data['owner'] = owner;
+                                    console.log(extInfo[1]);
+                                    if(extInfo[0] == 0){
+                                        $("#marketItems").append(
+                                            sellingItem({
+                                                data : data,
+                                                extInfo :extInfo
+                                            }, result)
+                                        );
+                                    }
+                                });
+                            });
+                        });
+                    });
+                }
+            });
+        }
+
+        function sellingItem(_opt, _tokenSeq) {
+
+            let element = "<div class=\"col-md-3 col-sm-6\">";
+                element +=  "<div class=\"our-team\">";
+                element +=      "<div class=\"pic\">";
+                element +=          "<img src=\""+_opt.data.img+"\" >";
+                element +=      "</div>";
+                element +=      "<div class=\"team-content\">";
+                element +=        "<h3>"+_opt.data.name+"</h3>";
+                element +=        "<span class=\"post\"> [판매자] "+(_opt.data.owner === account ? "나":_opt.data.owner)+"</span>";
+                element +=        "<span class=\"post\"> 가격 : <span style=\"color:blue;\">"+_opt.extInfo[1]+"</span> GTK </span>";
+                element +=      "</div>";
+                element +=      "<ul class=\"social\">";
+                element +=      "<li><a href=\"#\" onclick=\"purchaseItem('"+_opt.extInfo[1]+"','"+_tokenSeq+"')\">구매하기</a></li>";
+                element +=      "</ul>";
+                element +=  "</div>";
+                element += "</div>";
+
+            return element;
+        }
+
+        function purchaseItem(_price, _tokenSeq) {
+
+            console.log("Gas 시세 >> ", $("#gas_price").val());
+
+            let myToken = $("#balanceOfToken").text();
+
+            if(myToken < _price) {
+                alert("GTK 가 부족합니다!");
+                return;
+            }
+
+            ItemTrading.buyCard.sendTransaction(
+                _tokenSeq,
+                _price,
+                {
+                    from : account,
+                    gasPrice : BigNumber($("#gas_price").val()).multipliedBy(1000000000)
+                },
+                function(error, result) {
+
+                    if(!error) {
+                        console.log(" buyCard 실행 >> ",result);
+                        notSaleExecution(_tokenSeq);
+                    } else
+                        console.log(error);
+
+                }
+            );
+        }
+
+        function notSaleExecution(tokenSeq) {
+            ItemFactory.setItemSellingStatus.sendTransaction(
+                tokenSeq,
+                BigNumber(1).toFixed(),
+                {
+                    from: account,
+                    gasPrice: BigNumber($("#gas_price").val()).multipliedBy(500000000)
+                },
+                (error, tx)=> {
+                    console.log(" setItemSellingStatus 실행 >> ", tx);
+                }
+            );
+        }
+
+    </script>
 </head>
 <body>
+<input type="hidden" id="gas_price" />
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1>아이템 마켓 플레이스</h1>
+                <h5 class="text-right">현재 보유 : <span id="balanceOfToken"></span> GTK</h5>
+            </div>
+        </div>
+        <div class="row" id="marketItems">
+
+            <div class="col-md-3 col-sm-6">
+                <div class="our-team">
+                    <div class="pic">
+                        <img src="https://bootsnipp.com/img/avatars/552882bc08538da46b0a8ede8b106e3668c80a42.jpg" >
+
+                    </div>
+                    <div class="team-content">
+                        <h3>Raj Kumar</h3>
+                        <span class="post"> Web Designer </span>
+                    </div>
+                    <ul class="social">
+                        <li><a href="" class="fa fa-facebook"></a></li>
+                        <li><a href="" class="fa fa-twitter"></a></li>
+                        <li><a href="" class="fa fa-google-plus"></a></li>
+                        <li><a href="www.linkedin.com/in/raj-kumar-web-designer" class="fa fa-linkedin"></a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 
 </body>
 </html>

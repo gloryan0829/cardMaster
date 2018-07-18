@@ -21,11 +21,11 @@ module.exports = function (app)
     });
 
     app.get('/login', function(req, res){
-        goHtmlPage('./public/login.html');
+        goHtmlPage('./public/login.html',req, res);
     });
 
     app.get('/mypage', function(req, res){
-        goHtmlPage('./public/mypage.html');
+        goHtmlPage('./public/mypage.html',req, res);
     });
 
     app.get('/', function(req, res){
