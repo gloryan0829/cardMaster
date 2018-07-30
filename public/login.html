@@ -34,15 +34,8 @@
 
             web3js.eth.getAccounts(function(error, result) {
                 if (result.length) {
-                    console.log(result);
                     $("#accountLogText").text(result[0]);
-                } else {
-                    $("#accountLogText").text("접속 account 정보가 없습니다 클라이언트를 다시 실행하여 주세요..");
-                }
-            });
 
-            loginStatus().then((result)=>{
-                if(result.status === "not_connected"){
                     Kakao.Auth.createLoginButton({
                         container: "#kakao-login-btn",
                         size : "small",
@@ -54,6 +47,9 @@
                             console.log(err);
                         }
                     });
+
+                } else {
+                    $("#accountLogText").text("접속 account 정보가 없습니다 클라이언트를 다시 실행하여 주세요..");
                 }
             });
 

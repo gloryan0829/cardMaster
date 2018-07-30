@@ -15,13 +15,14 @@
     <script src="./static/libs/commonUtil.js"></script>
 
     <script>
+        // 토큰, 아이템생성
         const ItemTokenAddr = "0x8b4ece03a7499119fcf908d4e3525aa5e3356897";
-        const ITemFactoryAddr = "0xc83467cdbb1c3fefabf7f8b7fef1695a8ebba11b";
+        const ITemFactoryAddr = "0x2883d6ccab028bb6667f53a11cfdb711f76e298b";
         const ITemFactoryABI = [{"constant":true,"inputs":[{"name":"_interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"}],"name":"approve","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"tokenId","type":"uint256"},{"name":"uri","type":"string"}],"name":"setTokenURI","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"InterfaceId_ERC165","outputs":[{"name":"","type":"bytes4"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"burn","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"exists","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"itemExtInfo","outputs":[{"name":"status","type":"uint8"},{"name":"itemSellingPrice","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tokenId","type":"uint256"},{"name":"_price","type":"uint256"}],"name":"setItemSellingPrice","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"tokenId","type":"uint256"}],"name":"getItemSellingAvailable","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"itemTradingAddr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_tokenId","type":"uint256"},{"name":"_status","type":"uint8"}],"name":"setItemSellingStatus","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_uri","type":"string"}],"name":"setTokenInfoURIBase","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_tokenId","type":"uint256"},{"name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_itemTradingAddr","type":"address"}],"name":"setItemTradingAddr","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"createItem","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"v","type":"uint256"}],"name":"uintToString","outputs":[{"name":"str","type":"string"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_tokenName","type":"string"},{"name":"_tokenSymbol","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"}],"name":"OwnershipRenounced","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":true,"name":"_tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_approved","type":"address"},{"indexed":true,"name":"_tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_operator","type":"address"},{"indexed":false,"name":"_approved","type":"bool"}],"name":"ApprovalForAll","type":"event"}];
         const TokenABI = [{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_subtractedValue","type":"uint256"}],"name":"decreaseApproval","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"itemTradingAddr","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_itemTradingAddr","type":"address"}],"name":"setItemTradingAddr","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_addedValue","type":"uint256"}],"name":"increaseApproval","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"}],"name":"OwnershipRenounced","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"spender","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"}];
 
-        var account, ItemFactory, GameToken, Attack = 0, Defence = 0, GasPrice,
-            initObject = {
+        var account, ItemFactory, GameToken, Attack = 0, Defence = 0,
+            initObject = { // 장착Item Object 초기화
                 "Ring": ["반지", "#"],
                 "Helmet": ["투구", "#"],
                 "Hair": ["가발", "#"],
@@ -33,6 +34,7 @@
 
         $(document).ready(function () {
 
+            //로그인 상태 체크
             loginStatus().then((result) => {
                 if(result.status === "connected") {
                     $("#nick_name").text(result.user.properties.nickname);
@@ -43,22 +45,28 @@
                 }
             });
 
+            //web3js 초기화
             web3js = new Web3(window.web3.currentProvider);
 
+            // 컨트랙트 불러오기
             ItemFactory = web3js.eth.contract(ITemFactoryABI).at(ITemFactoryAddr);
             GameToken = web3js.eth.contract(TokenABI).at(ItemTokenAddr);
 
+            // 어카운트 정보 가져오기
             web3js.eth.getAccounts(function (error, result) {
                 if (result.length) {
                     console.log(result);
                     account = result[0];
                     $("#account").text(result[0]);
 
+                    // 이더 토큰 계좌 조회
                     balanceOf();
+                    // Owner 아이템 보유 가져오기
                     ownerOfItems();
+                    // 장착 Item Setting
                     itemPositionSetup();
-                    GasPrice = getGasPrice();
-                    GasPrice.then((data) => { $("#gas_price").val(data) });
+                    // 트랜잭션 Low Gas 비용 가져오기
+                    getGasPrice().then((data) => { $("#gas_price").val(data) });
                 }
             });
         });
@@ -84,7 +92,7 @@
             });
 
         }
-
+        // 내 보유 아이템
         function ownerOfItems() {
 
             $("#my_tokens").empty();
@@ -99,31 +107,30 @@
                 myBalance = result;
 
                 for (var i = 0; i < myBalance; i++) {
-                    ItemFactory.tokenByIndex(i, (error, result) => {
+                    ItemFactory.tokenOfOwnerByIndex(account, i, (error, result) => {
                         if (errorChk("tokenByIndex 호출 실패", error)) return;
 
-                        let getAssetMetaInfo = new Promise((resolve, reject) => {
+                        new Promise((resolve, reject) => {
                             resolve($.ajax("./api/items/" + result));
-                        });
-
-                        ItemFactory.itemExtInfo(result, (error, extInfo) => {
-                            getAssetMetaInfo
-                                .then((data)=>{
-                                    $("#my_tokens").append(
-                                        createCard({
-                                            data : data,
-                                            extInfo :extInfo
-                                        }, result)
-                                    );
-                                });
+                        }).then((data)=>{
+                            ItemFactory.itemExtInfo(result, (error, extInfo) => {
+                                console.log(data);
+                                console.log(extInfo);
+                                $("#my_tokens").append(
+                                    createCard({
+                                        data : data,
+                                        extInfo :extInfo
+                                    }, result)
+                                );
+                            });
                         });
                     });
                 }
             });
         }
-        //0xD01Ff256CEF9851488CB6533746f76A6525EfA5C
+
+        // 선물 주기
         function sendGiftToFriends(_recipent, _tokenSeq) {
-//            console.log({account,_recipent,_tokenSeq});
             return new Promise((resolve, reject) => {
                ItemFactory.safeTransferFrom.sendTransaction(
                     account,
@@ -147,6 +154,7 @@
             });
         }
 
+        //판매가격 변경하기
         function salePriceChange(tokenSeq, price) {
             return new Promise((resolve, reject) => {
                 ItemFactory.setItemSellingPrice.sendTransaction(
@@ -168,8 +176,8 @@
             });
         }
 
+        //판매 상태 변경
         function saleStatusChange(tokenSeq, status) {
-            console.log(status);
             ItemFactory.setItemSellingStatus.sendTransaction(
                 tokenSeq,
                 BigNumber(status).toFixed(),
@@ -188,10 +196,12 @@
             );
         }
 
+        // 장비 장착 초기화
         function dataInit() {
             window.localStorage.equip = JSON.stringify(initObject);
         }
 
+        // 장비 장착 localStorage 사용 ( DB x )
         function equip(equipment) {
             // DB 가 아닌 우선 SessionStorage사용.
             // 초기화
@@ -259,6 +269,7 @@
 
         }
 
+        // 장비 장착 해제 ( DB x )
         function unEquip(data){
             $("#" + data.itemType).empty();
 
@@ -275,6 +286,7 @@
             $("#" + data.itemType).html(initObject[data.itemType][0]);
         }
 
+        // 로컬스토리지 변경 Array to JsonString
         function changeStorage(equipment) {
             var equip = JSON.parse(window.localStorage.equip);
 
@@ -284,6 +296,7 @@
             console.log(window.localStorage.equip);
         }
 
+        // 화면 Refresh Local Storage에서 장비 불러오기
         function itemPositionSetup() {
             var equip = JSON.parse(window.localStorage.equip);
             for (var key in equip) {
@@ -353,11 +366,13 @@
             }
         }
 
+        // 공격 방어 Dom Refresh
         function totalAbility(){
             $("#attack").text(Attack);
             $("#defence").text(Defence);
         }
 
+        // Gas 시장 가격 가져오기
         function getGasPrice() {
             return new Promise((resolve, reject) => {
                 $.getJSON('https://ethgasstation.info/json/ethgasAPI.json', (data) => {
@@ -366,6 +381,7 @@
             });
         }
 
+        // Item Card 생성
         function createCard(_option, _tokenId){
 
             // 아이템 카드 레이아웃
@@ -416,7 +432,6 @@
 
                 let badge = document.createElement('span');
                 badge.classList.add("badge");
-                console.log(sellingStatus.action );
                 sellingStatus.addEventListener('click', ()=>{
                    if(confirm("[판매상태] 를 변경하시겠습니까")){
 
@@ -545,7 +560,9 @@
         <h4>
             <img id="profileImg"  class="mr-3 mt-3 rounded-circle" style="width:60px;">
             <span id="nick_name"></span>
-            <button type="button" class="btn btn-outline-secondary">로그아웃</button>
+            <a href="./login">
+                <button type="button" class="btn btn-outline-secondary">로그아웃</button>
+            </a>
         </h4>
         <p>어카운트 정보 : <span id="account"></span></p>
         <p>보유 Ether : <span id="balanceOf"></span>
@@ -555,14 +572,14 @@
         </p>
         <p>보유 게임토큰 : <span id="balanceOfToken"></span>
             <a href="./tradeToken">
-                <button type="button" class="btn btn-outline-dark"">토큰거래하기</button>
+                <button type="button" class="btn btn-outline-dark">토큰거래하기</button>
             </a>
         </p>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text">현재 시장가 Gas(gWei)</span>
             </div>
-            <input type="text" class="form-control" id="gas_price" readonly>
+            <input type="string" class="form-control" id="gas_price" readonly>
             <div class="input-group-append">
                 <span class="input-group-text">.0</span>
             </div>
@@ -572,9 +589,9 @@
 <div class="card border p-3">
     <h3>
         공격 : <span id="attack">0</span> 방어 : <span id="defence">0</span>
-        <a href="./battle"><button type="button" class="btn btn-danger">용잡으러가기</button></a>
+        <a href="./battle"><button type="button" class="btn btn-danger">용잡기</button></a>
     </h3>
-    <table border="1" cellpadding="10" cellspacing="5" style="align-content: center;width:"100%";">
+    <table border="1" cellpadding="10" cellspacing="5" style="align-content:center;width:100%;">
         <tr>
             <td id="Ring" align="center">반지</td>
             <td id="Helmet" align="center">투구</td>

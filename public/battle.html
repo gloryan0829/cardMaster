@@ -2,9 +2,283 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>배틀!</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <link rel="stylesheet" href="./static/libs/card.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bignumber.js/bignumber.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+    <script src="./static/libs/commonUtil.js"></script>
+    <script>
+        const BattleAddr = "0x9cb8bc812dd9bed668d8a0335dc657a7c3c14ece";
+        const BattleABI = [{"constant":false,"inputs":[{"name":"_dragonId","type":"uint256"},{"name":"_attacker","type":"address"}],"name":"resetCoolTime","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"uint256"}],"name":"dragonsOfAttacker","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"address"}],"name":"dragonAttacker","outputs":[{"name":"attackDamage","type":"uint256"},{"name":"readyTime","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_dragonId","type":"uint256"},{"name":"_attacker","type":"address"}],"name":"remainNextAttackTime","outputs":[{"name":"","type":"int256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getBornedDragons","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"dragonAlive","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"cooldownTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"dragonAttackerCount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"dragons","outputs":[{"name":"name","type":"string"},{"name":"img","type":"uint256"},{"name":"attack","type":"uint256"},{"name":"life","type":"uint256"},{"name":"remainLife","type":"uint256"},{"name":"status","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_dragonId","type":"uint256"},{"name":"_attDamage","type":"uint256"}],"name":"damage","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_dragonId","type":"uint256"},{"name":"_attacker","type":"address"}],"name":"isReady","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_name","type":"string"}],"name":"createRandomDragon","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"id","type":"uint256"},{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"img","type":"uint256"},{"indexed":false,"name":"attack","type":"uint256"},{"indexed":false,"name":"defence","type":"uint256"}],"name":"NewDragon","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"}],"name":"OwnershipRenounced","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"}];
+
+        let account, BattleContract, Attack = 0, Defence = 0, CoolTimer, currDragon;
+
+        $(document).ready(() => {
+            //로그인 상태 체크
+            loginStatus().then((result) => {
+                if(result.status === "connected") {
+//                    $("#nick_name").text(result.user.properties.nickname);
+//                    $("#profileImg").attr("src", result.user.properties.thumbnail_image);
+                }else{
+                    window.location = "./login";
+                    return false;
+                }
+            });
+
+            web3js = new Web3(window.web3.currentProvider);
+
+            BattleContract = web3js.eth.contract(BattleABI).at(BattleAddr);
+
+            // Account 정보 가져오기
+            web3js.eth.getAccounts(function (error, result) {
+                if (result.length) {
+                    console.log(result);
+                    account = result[0];
+                    // 배틀화면 리프레쉬
+                    refresh();
+                }
+            });
+
+            $("#damage").click(()=>{
+                if(confirm("공격하시겠습니까?")) {
+                    damage();
+                }
+                console.log(Attack);
+            });
+
+            $("#coolTimeReset").click(()=>{
+                if(confirm("쿨타임 리셋하시겠습니까?")) {
+                    resetCoolTime();
+                }
+            });
+
+        });
+
+        function resetCoolTime() {
+            return new Promise((resolve, fail) => {
+                BattleContract.resetCoolTime.sendTransaction(
+                    currDragon,
+                    account,
+                    {
+                        from : account,
+                        gasPrice : 5000000000
+                    }, (error, result) => {
+                        console.log(resolve(result));
+                        location.reload();
+                    });
+            });
+        }
+
+        function damage() {
+            return new Promise((resolve, fail) => {
+                BattleContract.damage.sendTransaction(
+                    currDragon,
+                    Attack,
+                    {
+                      from : account,
+                      gasPrice : 5000000000
+                    }, (error, result) => {
+                        console.log(resolve(result));
+                        location.reload();
+                });
+            })
+        }
+
+        function refresh() {
+
+            clearInterval(CoolTimer);
+
+            let ability = characterAbility();
+            let appearance = characterAppearance(ability);
+            $("#myCharacter").empty();
+            $("#myCharacter").append( characterEl({img : appearance}) );
+
+            Promise.all([getBornedDragons(), getDragonAlive()]).then((returnVal) => {
+                if(returnVal[0] == 0 || returnVal[1] == 0) {
+                     alert("생성된 용이 없습니다.");
+                     $("#randomDragon").text("현재 생성된 용이 없습니다.");
+                     return -1;
+                }
+                currDragon = returnVal[0]-1;
+
+                return returnVal[0];
+
+            }).then((idx) => {
+                console.log(idx);
+                if(idx == -1) return -1;
+
+                getDragon(idx-1).then((dragon) => {
+                    console.log(dragon);
+                    let dragonEl = characterEl({
+                         img: "monsters/monster" + dragon[1] + ".png",
+                         name: dragon[0]
+                    });
+                    $("#randomDragon").empty();
+                    $("#randomDragon").append(dragonEl);
+                    $("#dragonAttack").text(dragon[2]);
+                    $("#dragonLife").text(dragon[3]);
+                    $("#dragonRemainLife").text(dragon[4])
+                });
+            }).then((idx) => {
+
+                if(idx == -1) return -1;
+
+                dragonAttackerInfo(idx-1).then((dragonInfo) => {
+                      console.log(dragonInfo);
+
+                      if(dragonInfo[0] == 0) {
+                            $("#coolTime").text("0");
+                            $("#myDamage").text("0 (0%)");
+                      }else{
+                            let coolTime = BigNumber(dragonInfo[1]).toFixed() - (new Date().getTime() / 1000).toFixed(0);
+
+                            CoolTimer = setInterval(()=>{
+                                coolTime -=1;
+
+                                if(coolTime <= 0){
+                                      clearInterval(CoolTimer);
+                                      coolTime = 0;
+                                }
+                                $("#coolTime").text(coolTime);
+
+                            },1000);
+
+                            $("#coolTime").text(coolTime);
+                            $("#myDamage").text(dragonInfo[0] + " (" + (dragonInfo[0]/Number($("#dragonLife").text()) *100).toPrecision(2) + " %)");
+                      }
+                });
+            });
+        }
+
+        function getDragon(i) {
+            return new Promise((resolve, error) => {
+                    BattleContract.dragons(i, (error, dragon) => {
+                        resolve(dragon);
+                    });
+            });
+        }
+
+        function getDragonAlive() {
+
+            return new Promise((resolve, error) => {
+                BattleContract.dragonAlive((error, result) => {
+                    resolve(result);
+                });
+            });
+
+        }
+
+        function getBornedDragons() {
+
+            return new Promise((resolve, error) => {
+                BattleContract.getBornedDragons((error, result) => {
+                    resolve(result);
+                });
+            });
+
+        }
+
+        function dragonAttackerInfo(_dragonId) {
+            return new Promise((resolve, error) => {
+                BattleContract.dragonAttacker(_dragonId, account, (error, result) => {
+                   resolve(result);
+                });
+            })
+        }
+
+        function characterAbility(){
+            Attack = 0;
+            Defence = 0;
+
+            let equip = JSON.parse(window.localStorage.equip);
+            for (let key in equip) {
+                if(equip.hasOwnProperty(key)){
+                    let ability = equip[key];
+                    let att = ability[4] || 0;
+                    let def = ability[5] || 0;
+
+                    Attack+=att;
+                    Defence+=def;
+                }
+            }
+
+            if(Attack == 0 && Defence == 0){
+                alert("무기를 장착하세요!");
+                window.location = "./mypage";
+            }else {
+                $("#attack").text(Attack);
+                $("#defence").text(Defence);
+            }
+            return Attack + Defence;
+        }
+
+        function characterAppearance(totalAbility){
+            let img;
+
+            if(totalAbility > 0 && totalAbility <= 300){
+                console.log(123);
+                img = "knights/grade1.png";
+            }else if(totalAbility > 300 && totalAbility <= 500){
+                img = "knights/grade2.png";
+            }else if(totalAbility > 500){
+                img = "knights/grade3.png";
+            }
+            return img;
+        }
+
+        function characterEl(opt){
+            let element = "<div>";
+                element +=  "<div class=\"our-team\">";
+                element +=      "<div>";
+                element +=          "<img src=\"./static/imgs/battles/"+opt.img+"\" >";
+                element +=      "</div>";
+                element +=      "<div class=\"team-content\">";
+                element +=        "<h3>"+ (opt.name || "용사") +"</h3>";
+                element +=      "</div>";
+                element +=  "</div>";
+                element += "</div>";
+
+            return element;
+        }
+
+    </script>
 </head>
 <body>
-$END$
+    <table border="0" cellpadding="10" cellspacing="5" class="text-center" style="align-content:center;width:100%;height:100%;">
+        <th width="40%" class="align-middle text-monospace">나의 캐릭터</th>
+        <th wudth="20%" class="align-middle"></th>
+        <th wudth="40%" class="align-middle text-monospace">랜덤 드래곤</th>
+        <tbody>
+            <tr>
+                <td class="align-middle text-monospace">
+                    공격 : <span id="attack">0</span> 방어 : <span id="defence">0</span><br/>
+                    <span id="myCharacter"></span>
+                </td>
+                <td class="align-middle">
+                    <img width="100" src="./static/imgs/vs.png" />
+                </td>
+                <td class="align-middle text-monospace">
+                    공격 : <span id="dragonAttack">0</span> 생명력 : <span id="dragonRemainLife">0</span> /  <span id="dragonLife">0</span><br/>
+                    <span id="randomDragon"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="align-middle text-monospace" colspan="3">
+                    내가 입힌 데미지 : <span id="myDamage"></span>
+                    남은 쿨타임 : <span id="coolTime"></span> (초)
+                    <button type="button" id="damage" class="btn btn-outline-primary">공격하기</button>
+                    <button type="button" id="coolTimeReset" class="btn btn-outline-secondary">쿨타임리셋</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>

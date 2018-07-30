@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>토큰교환</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./static/libs/card.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bignumber.js/bignumber.min.js"></script>
@@ -122,14 +126,16 @@
             }
 
             transferValue = transferValue.multipliedBy($("#transfer_unit").val());
+            console.log(account);
+
             console.log(recipent);
-            console.log(transferValue);
+            console.log(transferValue.toFixed());
 
             GameToken.transfer.sendTransaction(
-                account,
+                recipent,
                 transferValue.toFixed(),
                 {
-                    from: recipent, //0xD01Ff256CEF9851488CB6533746f76A6525EfA5C
+                    from: account,
                     gasPrice: BigNumber($("#gas_price").val()).multipliedBy(500000000)
                 },
                 (error, result) => {

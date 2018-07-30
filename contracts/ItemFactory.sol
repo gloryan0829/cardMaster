@@ -8,18 +8,19 @@ contract ItemFactory is ERC721Token, Ownable {
 
     enum ItemSellingStatus { AVAIL, UNAVAIL }
 
-
     using SafeMath for uint;
     using strings for *;
     uint tokenSeq;
     string baseURI;
+
+    address public itemTradingAddr;
 
     struct ItemExtInfo {
         ItemSellingStatus status;
         uint itemSellingPrice;
     }
 
-    mapping(uint => ItemExtInfo) public itemPriceInfo;
+    mapping(uint => ItemExtInfo) public itemExtInfo;
 
     constructor(string _tokenName, string _tokenSymbol) ERC721Token(_tokenName, _tokenSymbol) public {
         tokenSeq = 0;
@@ -31,7 +32,7 @@ contract ItemFactory is ERC721Token, Ownable {
         require(!exists(tokenSeq), "This token is already exists");
         _mint(owner, tokenSeq);
         _setTokenURI(tokenSeq, baseURI.toSlice().concat(uintToString(tokenSeq).toSlice()));
-        itemPriceInfo[tokenSeq] = ItemExtInfo({ status : ItemSellingStatus.UNAVAIL, itemSellingPrice : 10000 });
+        itemExtInfo[tokenSeq] = ItemExtInfo({ status : ItemSellingStatus.UNAVAIL, itemSellingPrice : 10000 });
         tokenSeq = tokenSeq.add(1);
     }
 
@@ -47,12 +48,16 @@ contract ItemFactory is ERC721Token, Ownable {
         baseURI = _uri;
     }
 
-    function itemSellingAvailable(uint256 tokenId) public view returns (bool) {
-        return ( itemPriceInfo[tokenId].status == ItemSellingStatus.AVAIL? true:false);
+    function setItemSellingStatus(uint256 _tokenId, ItemSellingStatus _status) public {
+        itemExtInfo[_tokenId].status = _status;
+    }
+
+    function getItemSellingAvailable(uint256 tokenId) public view returns (bool) {
+        return ( itemExtInfo[tokenId].status == ItemSellingStatus.AVAIL? true:false);
     }
 
     function setItemSellingPrice(uint _tokenId, uint _price) onlyOwnerOf(_tokenId) public {
-        itemPriceInfo[_tokenId].itemSellingPrice = _price;
+        itemExtInfo[_tokenId].itemSellingPrice = _price;
     }
 
     function uintToString(uint v) public pure returns (string str) {
@@ -69,6 +74,30 @@ contract ItemFactory is ERC721Token, Ownable {
             s[j] = reversed[i - j];
         }
         str = string(s);
+    }
+
+    function setItemTradingAddr(address _itemTradingAddr) public onlyOwner {
+        itemTradingAddr = _itemTradingAddr;
+    }
+
+    function isApprovedOrOwner(
+        address _spender,
+        uint256 _tokenId
+    )
+    internal
+    view
+    returns (bool)
+    {
+        address owner = ownerOf(_tokenId);
+        // Disable solium check because of
+        // https://github.com/duaraghav8/Solium/issues/175
+        // solium-disable-next-line operator-whitespace
+        return (
+        _spender == owner || // owner 이거나
+        getApproved(_tokenId) == _spender || // approve 받은 계정이거나
+        isApprovedForAll(owner, _spender)  || // owner 의 전체 토큰에 접근 권한이 있는지
+        msg.sender == itemTradingAddr
+        );
     }
 
 }

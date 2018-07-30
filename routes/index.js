@@ -16,38 +16,33 @@ function goHtmlPage(url, req, res) {
 module.exports = function (app)
 {
 
-    app.get('/getEtherBalance', function(req, res){
-        console.log(req);
-    });
-
+    // 로그인 페이지
     app.get('/login', function(req, res){
         goHtmlPage('./public/login.html',req, res);
     });
 
+    // 마이페이지
     app.get('/mypage', function(req, res){
         goHtmlPage('./public/mypage.html',req, res);
     });
 
+    // 마이페이지
     app.get('/', function(req, res){
         goHtmlPage('./public/mypage.html',req, res);
     });
 
+    // 마켓플레이스
     app.get('/marketPlace', function(req, res){
         goHtmlPage('./public/marketPlace.html',req, res);
     });
 
+    // 토큰 구매
     app.get('/tradeToken', function(req, res){
         goHtmlPage('./public/tradeToken.html',req, res);
     });
 
-    // Token Wallet Example
-    app.get('/TokenWallet', function(req, res){
-        goHtmlPage('./public/TokenWallet.html',req, res);
-    });
-
-    // Token 721 Wallet Example
-    app.get('/Token721Wallet', function(req, res){
-        goHtmlPage('./public/721TokenWallet.html',req, res);
+    app.get('/battle', function(req, res) {
+        goHtmlPage('./public/battle.html', req, res);
     });
 
     app.get('/api/items', function(req, res){
@@ -63,4 +58,15 @@ module.exports = function (app)
         if(!data) data = {"tokenSeq":-1};
         res.json(data);
     });
+
+    // Token Wallet Example 토큰 지갑 예제 ( * 별도 )
+    app.get('/TokenWallet', function(req, res){
+        goHtmlPage('./public/TokenWallet.html',req, res);
+    });
+
+    // Token 721 Wallet Example ERC721 토큰 지갑 예제 ( * 별도 )
+    app.get('/Token721Wallet', function(req, res){
+        goHtmlPage('./public/721TokenWallet.html',req, res);
+    });
+
 };
