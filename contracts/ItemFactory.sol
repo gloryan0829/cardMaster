@@ -1,7 +1,7 @@
 pragma solidity ^0.4.23;
 
-import "./ERC721.sol";
-import "github.com/Arachnid/solidity-stringutils/strings.sol";
+import "./Token721.sol";
+import "./lib/strings.sol";
 
 
 contract ItemFactory is ERC721Token, Ownable {
